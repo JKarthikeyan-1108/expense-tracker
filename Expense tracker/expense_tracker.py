@@ -12,7 +12,7 @@ HISTORY_FILE = "expense_history.xlsx"
 BUDGET = 5000
 
 def main():
-    print("📘 Expense Tracker")
+    print("Expense Tracker")
 
     handle_monthly_reset()
 
@@ -42,10 +42,10 @@ def main():
         elif choice == "4":
             delete_expense(EXPENSE_FILE)
         elif choice == "5":
-            print("👋 Exiting Expense Tracker. Goodbye!")
+            print(" Exiting Expense Tracker. Goodbye!")
             break
         else:
-            print("❌ Invalid option. Please choose again.")
+            print(" Invalid option. Please choose again.")
 
 def handle_monthly_reset():
     if not os.path.exists(EXPENSE_FILE):
@@ -73,7 +73,7 @@ def handle_monthly_reset():
         with open(EXPENSE_FILE, "w", encoding="utf-8", newline="") as f:
             writer = csv.writer(f)
             writer.writerow(["name", "amount", "category", "date"])
-        print(f"📁 Data for {sheet_name} moved to '{HISTORY_FILE}' and new file started.")
+        print(f" Data for {sheet_name} moved to '{HISTORY_FILE}' and new file started.")
 
 def save_to_excel(data, sheet_name):
     if os.path.exists(HISTORY_FILE):
@@ -121,17 +121,17 @@ def save_expense_to_excel(expense):
     ws.append([expense.name, expense.amount, expense.category, expense.date])
     wb.save(HISTORY_FILE)
 
-    print(f"✅ Saved to Excel under sheet: {sheet_name}")
+    print(f" Saved to Excel under sheet: {sheet_name}")
 
 def get_user_expense():
-    print("\n📝 Entering New Expense")
+    print("\n Entering New Expense")
     name = input("Enter expense name: ")
     while True:
         try:
             amount = float(input("Enter expense amount: "))
             break
         except ValueError:
-            print("❌ Invalid amount. Try again.")
+            print(" Invalid amount. Try again.")
 
     categories = ["Food", "Milk & Snacks", "Bus", "Grocery", "Entertainment", "Stationary", "Clothing", "Other"]
     for i, category in enumerate(categories, start=1):
@@ -145,13 +145,13 @@ def get_user_expense():
                 today = datetime.date.today().isoformat()
                 return Expense(name=name, amount=amount, category=category, date=today)
             else:
-                print("❌ Invalid category.")
+                print(" Invalid category.")
         except ValueError:
-            print("❌ Enter a number.")
+            print(" Enter a number.")
 
 def summarize_expenses(path, budget):
     if not os.path.exists(path):
-        print("⚠️ No expenses recorded.")
+        print(" No expenses recorded.")
         return
 
     with open(path, "r", encoding="utf-8") as f:
@@ -159,10 +159,10 @@ def summarize_expenses(path, budget):
         expenses = [Expense(row["name"], float(row["amount"]), row["category"], row["date"]) for row in reader]
 
     if not expenses:
-        print("⚠️ No valid expenses found.")
+        print(" No valid expenses found.")
         return
 
-    print("\n📊 Expense Summary")
+    print("\n Expense Summary")
     total_spent = sum(e.amount for e in expenses)
     remaining = budget - total_spent
     percent_used = (total_spent / budget) * 100
@@ -186,7 +186,7 @@ def summarize_expenses(path, budget):
     plot_expenses(category_totals, total_spent, remaining)
 
 def plot_expenses(category_totals, total_spent, remaining):
-    print("📈 Generating graphs...")
+    print(" Generating graphs...")
     categories = list(category_totals.keys())
     values = list(category_totals.values())
 
@@ -206,17 +206,17 @@ def plot_expenses(category_totals, total_spent, remaining):
 
 def delete_expense(path):
     if not os.path.exists(path):
-        print("⚠️ Expense file not found.")
+        print(" Expense file not found.")
         return
 
     with open(path, "r", encoding="utf-8") as f:
         reader = list(csv.DictReader(f))
 
     if not reader:
-        print("⚠️ No expenses to delete.")
+        print(" No expenses to delete.")
         return
 
-    print("\n🗑️ Select expense to delete:")
+    print("\n Select expense to delete:")
     for i, row in enumerate(reader):
         print(f"{i+1}. {row['name']} | ₹{row['amount']} | {row['category']} | {row['date']}")
 
@@ -224,12 +224,12 @@ def delete_expense(path):
         idx = int(input("Enter the number to delete: ")) - 1
         if 0 <= idx < len(reader):
             deleted = reader.pop(idx)
-            print(f"✅ Deleted: {deleted['name']} | ₹{deleted['amount']}")
+            print(f" Deleted: {deleted['name']} | ₹{deleted['amount']}")
         else:
-            print("❌ Invalid index.")
+            print(" Invalid index.")
             return
     except ValueError:
-        print("❌ Enter a valid number.")
+        print(" Enter a valid number.")
         return
 
     with open(path, "w", encoding="utf-8", newline="") as f:
@@ -239,17 +239,17 @@ def delete_expense(path):
 
 def edit_expense(path):
     if not os.path.exists(path):
-        print("⚠️ Expense file not found.")
+        print(" Expense file not found.")
         return
 
     with open(path, "r", encoding="utf-8") as f:
         reader = list(csv.DictReader(f))
 
     if not reader:
-        print("⚠️ No expenses to edit.")
+        print(" No expenses to edit.")
         return
 
-    print("\n✏️ Select expense to edit:")
+    print("\n Select expense to edit:")
     for i, row in enumerate(reader):
         print(f"{i+1}. {row['name']} | ₹{row['amount']} | {row['category']} | {row['date']}")
 
@@ -270,12 +270,12 @@ def edit_expense(path):
                 "date": new_date
             }
 
-            print("✅ Expense updated.")
+            print(" Expense updated.")
         else:
-            print("❌ Invalid index.")
+            print(" Invalid index.")
             return
     except ValueError:
-        print("❌ Enter a valid number.")
+        print(" Enter a valid number.")
         return
 
     with open(path, "w", encoding="utf-8", newline="") as f:
@@ -285,7 +285,3 @@ def edit_expense(path):
 
 if __name__ == "__main__":
     main()
-# This code is a simple expense tracker that allows users to add, view, edit, and delete expenses.
-# It saves expenses to a CSV file and also maintains an Excel history of monthly expenses.          
-# It provides a summary of expenses, including total spent, remaining budget, and daily budget.
-# It also generates bar and pie charts to visualize expenses by category.       \
